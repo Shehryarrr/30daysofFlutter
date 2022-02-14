@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
       // home: const HomePage(),
         themeMode: ThemeMode.light,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: GoogleFonts.lato().fontFamily,
+        primarySwatch: Colors.deepPurple,
+        fontFamily: GoogleFonts.lato().fontFamily,        
         primaryTextTheme:GoogleFonts.latoTextTheme()),
 
          darkTheme: ThemeData(
