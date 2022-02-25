@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'package:flutter_catlog/models/catalog.dart';
 import 'package:flutter_catlog/widgets/drawer.dart';
-import 'package:flutter_catlog/widgets/item_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,7 +31,9 @@ class _HomePageState extends State<HomePage> {
     CatalogModel.items = List.from(productsData)
         .map<Item>((item) => Item.fromMap(item))
         .toList();
-    setState(() {});
+    setState(() {
+
+    });
   }
 
   @override
@@ -44,17 +45,45 @@ class _HomePageState extends State<HomePage> {
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         // ignore: unnecessary_null_comparison
-        child:(CatalogModel.items != null && CatalogModel.items!.isNotEmpty)?            
-          ListView.builder(
-          itemCount: CatalogModel.items!.length,
-          itemBuilder: (context, index) {
-            return ItemWidget(
-              item: CatalogModel.items![index],
-            );
-          },
-        )
-        :const Center(child: CircularProgressIndicator(),
-        ),
+        child: (CatalogModel.items != null && CatalogModel.items!.isNotEmpty)
+            ? GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                ),
+                itemBuilder: (context, index) {
+                  final item = CatalogModel.items?[index];
+                  return Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: GridTile(
+                      header: Container(child: Text(item!.name, style: const TextStyle(color: Colors.white),
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                        color: Colors.deepPurple,
+                      ),
+                      ),
+                      child: Image.network(
+                        item.image
+                        ),
+                      footer :  Container(child: Text(item.price.toString(),
+                       style: const TextStyle(color: Colors.white),
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                      ),
+                      ),
+                  ));
+                },
+                itemCount: CatalogModel.items?.length,
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
       drawer: const MyDrawer(),
     );
